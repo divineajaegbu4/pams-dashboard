@@ -3,7 +3,8 @@ import axios from "axios";
 import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
 import Image from "next/image";
 
-import {imageData} from "@/app/component/ProspectsImages/images"
+import {imageData} from "@/app/component/ProspectsImages/images";
+import {inputs} from "@/app/component/ProspectInputs/input"
 
 
 export const ProspectsTable = () => {
@@ -39,83 +40,55 @@ export const ProspectsTable = () => {
             {
                 header: "Prospect detail",
                 data: mapProspectsData(prospects, (prospect: Users) => prospect?.name),
-                isCheckbox: true, // Add isCheckbox property for the checkbox
+                isCheckbox: inputs.map((input: Checkbox)=> input), // Add isCheckbox property for the checkbox
                 id: 1,
             },
             {
                 header: "Phone",
                 data: mapProspectsData(prospects, (prospect: Users) => prospect?.address?.zipcode),
-                // isCheckbox: true,
                 id: 2
             },
             {
                 header: "Interest",
                 data: imageData.map((img: Images) => img),
-                // isCheckbox: true,
                 id: 3,
             },
             {
                 header: "Agent Code",
                 data: mapProspectsData(prospects, (prospect: Users) => prospect?.username),
-                // isCheckbox: true,
                 id: 4
             },
             {
                 header: "Entry Channel",
                 data: mapProspectsData(prospects, (prospect: Users) => prospect?.address?.street),
-                // isCheckbox: true,
                 id: 5
             },
             {
                 header: "Created At", data: mapProspectsData(prospects, (prospect: Users) => prospect?.address?.geo?.lat),
-                // isCheckbox: true,
                 id: 6
             },
             {
                 header: "Updated At", data: mapProspectsData(prospects, (prospect: Users) => prospect?.address?.geo?.lng),
-                // isCheckbox: true,
                 id: 7
             },
             {
                 header: "Status", data: mapProspectsData(prospects, (prospect: Users) => prospect?.address?.suite),
-                // isCheckbox: true,
                 id: 8
             },
         ]
         : [];
 
 
-
-    // const ProspectsHeaderContentItem: React.FC<{ prospectsHeader: ProspectsHeader }> = ({ prospectsHeader }) => {
-    //     return (
-    //         <div className="relative mt-[70px] flex flex-col justify-center gap-[70px]">
-    //             {prospectsHeader?.isCheckbox ? <input type="checkbox"/>:""}
-    //             {prospectsHeader.id === 3 ? (
-    //                 (prospectsHeader.data as Images[]).map((image: Images) => (
-    //                     <Image key={image.id} src={image.img} alt="bike" width={40} height={40} className="-mt-[7px]" />
-    //                 ))
-    //             ) : (
-    //                 Array.isArray(prospectsHeader.data) ? (
-    //                     (prospectsHeader.data as Users[]).map((user: Users, index: number) => (
-    //                         <p key={index} className="prospect-data-names">
-    //                             {user.toString()}
-    //                          </p>
-    //                     ))
-    //                 ) : (
-    //                     <>
-    //                         {prospectsHeader.data}
-    //                     </>
-    //                 )
-    //             )}
-    //         </div>
-    //
-    //     );
-    // };
-
     const ProspectsBodyContentItem: React.FC<ProspectsHeaderContentItemProps> = ({ prospectsHeader }) => {
         const renderImages = (images: Images[]) => images.map(image =>
             <Image key={image.id} src={image.img} alt="bike" width={40} height={40} className="-mt-[7px]" />
         );
+
+        const renderInputs = (inputChecked: Checkbox[]) => inputChecked?.map((input)=> (
+            <div className="relative right-[25%] -top-[800px] ">
+                <input type={input?.isChecked} />
+            </div>
+        ))
 
         const renderUsers = (users: Users[]) => users.map((user, index) =>
             <p key={index} className="prospect-data-names">
@@ -135,16 +108,16 @@ export const ProspectsTable = () => {
             return  prospectsHeader.data;
         }
 
+        const renderInput = () => {
+            return renderInputs(prospectsHeader.isCheckbox as Checkbox[])
+        }
+
         return (
-            <div className="relative mt-[70px]  justify-center gap-[70px]">
-                {
-                    prospectsHeader?.isCheckbox && (
-                        <div>
-                            <input type="checkbox" />
-                        </div>
-                    )
-                }
+            <div className="relative mt-[70px] flex flex-col justify-center gap-[58px]">
+                {/*{prospectsHeader?.isCheckbox && <input type="checkbox" />}*/}
                 {renderData()}
+                {renderInput()}
+
             </div>
         );
     };

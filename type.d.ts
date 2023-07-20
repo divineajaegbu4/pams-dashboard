@@ -54,21 +54,28 @@ type Cities =      {
 }
 
 
+type Checkbox = {
+    isChecked: string,
+    id: number
+}
+
+
 type Images = {
     img: string,
     id: number
 }
 
 type ProspectsHeader = {
-    header: string,
-    data: Users[] | Images[],
-    id: number,
-    isCheckbox: boolean
-}
+    header: string; // Change "name" to "header"
+    data: Users[] | Images[];
+    isCheckbox?: Checkbox[]; // Make isCheckbox property optional
+    id: number;
+};
 
 type ProspectsHeaderContentItemProps =  {
     prospectsHeader: ProspectsHeader
 };
+
 
 type Users =   {
     "id": number,
