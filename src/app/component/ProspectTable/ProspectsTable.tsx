@@ -4,7 +4,8 @@ import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
 import Image from "next/image";
 
 import {imageData} from "@/app/component/ProspectsImages/images";
-import {inputs} from "@/app/component/ProspectInputs/input"
+import {inputs} from "@/app/component/ProspectInputs/input";
+import {StatusBackground} from "@/app/component/StatusSpecificBackground/StatusBackground"
 
 
 export const ProspectsTable = () => {
@@ -81,7 +82,7 @@ export const ProspectsTable = () => {
 
     const ProspectsBodyContentItem: React.FC<ProspectsHeaderContentItemProps> = ({ prospectsHeader }) => {
         const renderImages = (images: Images[]) => images.map(image =>
-            <Image key={image.id} src={image.img} alt="bike" width={40} height={40} className="-mt-[7px]" />
+            <Image key={image.id} src={image.img} alt="bike" width={40} height={40} className="-mt-[5px]" />
         );
 
         const renderInputs = (inputChecked: Checkbox[]) => inputChecked?.map((input)=> (
@@ -107,6 +108,14 @@ export const ProspectsTable = () => {
 
             return  prospectsHeader.data;
         }
+        //
+        // if(Array.isArray(prospectsHeader.data)) {
+        //     if(prospectsHeader.header === "Status") {
+        //         return <StatusBackground data={prospectsHeader.data}/>
+        //     }else {
+        //         return null
+        //     }
+        // }
 
         const renderInput = () => {
             return renderInputs(prospectsHeader.isCheckbox as Checkbox[])
@@ -114,7 +123,6 @@ export const ProspectsTable = () => {
 
         return (
             <div className="relative mt-[70px] flex flex-col justify-center gap-[58px]">
-                {/*{prospectsHeader?.isCheckbox && <input type="checkbox" />}*/}
                 {renderData()}
                 {renderInput()}
 
