@@ -52,3 +52,45 @@ type Cities =      {
         }
     ]
 }
+
+
+type Images = {
+    img: string,
+    id: number
+}
+
+type ProspectsHeader = {
+    header: string,
+    data: Users[] | Images[],
+    id: number,
+    isCheckbox: boolean
+}
+
+type ProspectsHeaderContentItemProps =  {
+    prospectsHeader: ProspectsHeader
+};
+
+type Users =   {
+    "id": number,
+    "name": string,
+    "username": string,
+    "email": string,
+    "address": {
+        "street": string,
+        "suite": string,
+        "city": string,
+        "zipcode": string,
+        "geo": {
+            "lat": string,
+            "lng": string
+        }
+    },
+    "phone": string,
+    "website": string,
+    "company": {
+        "name": string,
+        "catchPhrase": string,
+        "bs": string
+    }
+}
+

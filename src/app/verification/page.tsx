@@ -1,7 +1,12 @@
 import React from 'react'
+import {Header} from "@/app/component/Header/header";
 
 export default function Prospects() {
   return (
-    <div>Prospects</div>
+      <>
+        <Header/>
+
+        <div>Prospects</div>
+      </>
   )
 }

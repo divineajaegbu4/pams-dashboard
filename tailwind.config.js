@@ -11,8 +11,18 @@ module.exports = {
         mycolor: '#fff',
         fd0: '#fd0',
         background: "#F7FAFC",
-        active: "#02469438",
-        'corn-flower': '#6495ED'
+        'active': "rgba(2,70,148,.2196078431372549)",
+        'corn-flower': '#6495ED',
+        "black": "#2c2c2c",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+        // 'pink-100': '#FFC0CB',
+        // 'blue-100': '#1E90FF',
+        // 'red-100': '#FF0000',
+        // 'blue-200': '#0000FF',
+        // 'corn-flower-100': '#6495ED',
+      },
+      gridTemplateColumns: {
+        '2x100': 'repeat(2, 250px)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

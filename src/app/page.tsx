@@ -11,6 +11,10 @@ import Select from "react-select";
 import axios, {AxiosResponse} from "axios";
 import {config} from "@/app/component/config";
 import {getAllCities} from "@/lib/getAllCities";
+import {PipelineDistribution} from "@/app/component/PipelineDistribution/PipelineDistribution";
+import {ProspectsHeader} from "@/app/component/ProspectsHeader/ProspectsHeader"
+import {ProspectsTableHeader} from "@/app/component/ProspectTableHeader/ProspectsTableHeader"
+import Link from "next/link";
 // import provider from "data/data-provider";
 
 interface Option {
@@ -107,7 +111,7 @@ console.log("location", locationOptions)
             <div
                 className={`
                  w-[50%] max-w-[9rem] rounded-[5px] bg-gray-200 h-[2.5rem] relative p-[10px] flex justify-start
-                items-center transition-all ease-in-out duration-300 cursor-pointer   ${showTodayReport ? `justify-end transition-all ease-in-out duration-0.3 bg-active`: ""}`}
+                items-center transition-all ease-in-out duration-300 cursor-pointer   ${showTodayReport ? `justify-end transition-all ease-in-out duration-0.3 bg-blue-200`: ""}`}
 
                 onClick={() => toggleShowTodayReport(!showTodayReport)}
             >
@@ -118,8 +122,17 @@ console.log("location", locationOptions)
             </div>
         </div>
         </main>
+            <div>
+                <PipelineDistribution/>
+            </div>
         </section>
-    </>
+
+
+        <br/>
+        <div className="relative z-100 top-[150px]">
+            <ProspectsHeader />
+        </div>
+</>
   )
 }
 
