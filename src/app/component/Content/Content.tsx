@@ -12,7 +12,7 @@ export const DashboardContent: React.FC<ContentProps> = ({users, imgs, bgImgs}) 
             const img = imgs(user.id);
             const bgImg = bgImgs(user.id);
 
-            console.log({user, img, bgImg});
+            // console.log({user, img, bgImg});
 
             return (
                 <div key={user?.id} className={`${bgImg} content-hover content-border content-padding content-font content-width`}>

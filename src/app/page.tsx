@@ -2,20 +2,15 @@
 
 import Image from 'next/image'
 import React, {useEffect, useState} from "react";
-import {Header} from "@/app/component/Header/header";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt } from 'react-icons/fa';
-import { DatesRangeInput } from "semantic-ui-calendar-react";
 import Select from "react-select";
 import axios, {AxiosResponse} from "axios";
-import {config} from "@/app/component/config";
-import {getAllCities} from "@/lib/getAllCities";
+
+import {Header} from "@/app/component/Header/header";
 import {PipelineDistribution} from "@/app/component/PipelineDistribution/PipelineDistribution";
 import {ProspectsHeader} from "@/app/component/ProspectsHeader/ProspectsHeader"
-import {ProspectsTableHeader} from "@/app/component/ProspectTableHeader/ProspectsTableHeader"
-import Link from "next/link";
-// import provider from "data/data-provider";
 
 interface Option {
     value: string;

@@ -1,5 +1,5 @@
 import {GetProspectsLink} from "@/app/component/GetProspectsLink/GetProspectsLink";
-import {ProspectsTable} from "@/app/component/ProspectTable/ProspectsTable"
+import {ProspectIntegration} from "@/app/component/ProspectsIntegration/ProspectIntegration"
 
 export const ProspectsHeader = () => {
     return (
@@ -11,7 +11,7 @@ export const ProspectsHeader = () => {
             </main>
         </section>
             <main>
-                <ProspectsTable/>
+                <ProspectIntegration/>
             </main>
 
         </>

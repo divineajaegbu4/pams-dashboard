@@ -2,16 +2,27 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+// import { Link } from '@chakra-ui/next-js'
 import { useState } from "react"
+import {usePathname, useRouter} from "next/navigation";
+
+type ProspectHeader = {
+  name: string,
+  url: string
+}
 
 export function Header() {
-  const [active, setActive] = useState<number>(0)
+  // const [active, setActive] = useState<number>(0)
 
-  const handleClick = (index: number) => {
-    setActive(index)
-  }
+  const router = useRouter()
 
-  const pages = [
+  const pathName: string = usePathname();
+
+  // const handleClick = (index: number) => {
+  //   setActive(index)
+  // }
+
+  const pages: ProspectHeader[] = [
     { "name": "Prospects", "url": "/" },
     { "name": "Verification", "url": "/verification" },
     { "name": "Field Agents", "url": "/agents" },
@@ -25,16 +36,29 @@ export function Header() {
         </div>
 
         <div className='flex gap-24 relative right-20 text-#000 font-muli font-medium tracking-normal' >
-          {pages?.map((page, index) => {
-            return (
-              <nav key={page.name} onClick={() => handleClick(index)}>
-                <Link href={page.url}>
-                  {page.name}
-                </Link>
-                <div className={index === active ? "border-b-8 border-mycolor translate-y-[1.5rem] " : ""}></div>
-              </nav>
-            )
-          })}
+          {/*{pages?.map((page, index) => {*/}
+          {/*  return (*/}
+          {/*    <nav key={page.name} onClick={() => handleClick(index)}>*/}
+          {/*      <Link href={page.url}>*/}
+          {/*        {page.name}*/}
+          {/*      </Link>*/}
+          {/*      <div className={index === active ? "border-b-8 border-mycolor translate-y-[1.5rem] " : ""}></div>*/}
+          {/*    </nav>*/}
+          {/*  )*/}
+          {/*})}*/}
+
+            {pages?.map((page: ProspectHeader, index: number) => {
+              const isActive: boolean = pathName === page.url;
+              return (
+                  <nav key={page.name}>
+                    <Link href={page.url}>
+                      <span className={`navbar-item ${isActive ? "active" : ""}`}>
+                        {page.name}
+                      </span>
+                    </Link>
+                  </nav>
+              );
+            })}
         </div>
 
         <span className='flex items-center text-[13px] font-medium'>

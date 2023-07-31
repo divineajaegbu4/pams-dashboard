@@ -1,159 +1,110 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
-import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
-import Image from "next/image";
+import { useSpring, animated } from "react-spring";
 
-import {imageData} from "@/app/component/ProspectsImages/images";
-import {inputs} from "@/app/component/ProspectInputs/input";
-import {StatusBackground} from "@/app/component/StatusSpecificBackground/StatusBackground"
+import {LoadingProspect} from "@/app/component/LoadingProspect/LoadingProspect"
+import {ProspectListItem} from "@/app/component/ProspectListItem/ProspectListItem"
+
+type ProspectData = {
+    prospect_data: Users[],
+    isLoading: boolean
+}
+
+type ProspectHeader = {
+    header: string ,
+    id: number
+}
 
 
-export const ProspectsTable = () => {
+export const ProspectsTable:React.FC<ProspectData> = ({prospect_data, isLoading}) => {
 
-    const [prospects, setProspects] = useState<Users[]>([])
-    const prospectsHandler = ()=> {
-        try{
-            axios.get<Users[]>("https://jsonplaceholder.typicode.com/users")
-                .then((res):void=> {
+    let prospect_list_data: Users[] = prospect_data || [];
 
-                    const getProspectsData: Users[] = res?.data;
-                    setProspects(getProspectsData)
-                })
+    console.log("-----", prospect_data)
 
-        }catch (err) {
-            console.log(err)
+    const fade = useSpring({
+        from: {
+            opacity: 0,
+            marginTop: "6rem"
+        },
+        to: {
+            opacity: 1,
+            marginTop: "0rem"
         }
+    });
 
+
+
+    let prospect_list = null;
+
+    if(isLoading) {
+        prospect_list = <LoadingProspect/>
+    }else if (prospect_list_data?.length !== 0 && !isLoading) {
+        prospect_list = prospect_list_data?.map((prospect_list: Users)=> (
+            <ProspectListItem
+               prospect_list={prospect_list}
+            />
+        ))
+    }else if(prospect_list_data?.length === 0 && !isLoading) {
+        prospect_list = (
+            <tr>
+                <td>Nothing to see here</td>
+            </tr>
+        );
     }
 
-    useEffect(()=>{
-        prospectsHandler()
-    }, []);
+    const prospectHeaderData: ProspectHeader[] = [
+        {header: "Prospect detail", id: 1},
+        {header: "Phone", id: 2},
+        {header: "Interest", id: 3},
+        {header: "Agent Code", id: 4},
+        {header: "Entry Channel", id: 5},
+        {header: "Created At", id: 6},
+        {header: "Updated At", id: 7},
+        {header: "Status", id: 8},
+    ]
 
-
-    const mapProspectsData = (prospects: Users[], callback: (prospect: Users) => any) => {
-        return prospects.map(callback);
-    };
-
-
-    const prospectsHeaderData: ProspectsHeader[] = prospects
-        ? [
-            {
-                header: "Prospect detail",
-                data: mapProspectsData(prospects, (prospect: Users) => prospect?.name),
-                isCheckbox: inputs.map((input: Checkbox)=> input), // Add isCheckbox property for the checkbox
-                id: 1,
-            },
-            {
-                header: "Phone",
-                data: mapProspectsData(prospects, (prospect: Users) => prospect?.address?.zipcode),
-                id: 2
-            },
-            {
-                header: "Interest",
-                data: imageData.map((img: Images) => img),
-                id: 3,
-            },
-            {
-                header: "Agent Code",
-                data: mapProspectsData(prospects, (prospect: Users) => prospect?.username),
-                id: 4
-            },
-            {
-                header: "Entry Channel",
-                data: mapProspectsData(prospects, (prospect: Users) => prospect?.address?.street),
-                id: 5
-            },
-            {
-                header: "Created At", data: mapProspectsData(prospects, (prospect: Users) => prospect?.address?.geo?.lat),
-                id: 6
-            },
-            {
-                header: "Updated At", data: mapProspectsData(prospects, (prospect: Users) => prospect?.address?.geo?.lng),
-                id: 7
-            },
-            {
-                header: "Status", data: mapProspectsData(prospects, (prospect: Users) => prospect?.address?.suite),
-                id: 8
-            },
-        ]
-        : [];
-
-
-    const ProspectsBodyContentItem: React.FC<ProspectsHeaderContentItemProps> = ({ prospectsHeader }) => {
-        const renderImages = (images: Images[]) => images.map(image =>
-            <Image key={image.id} src={image.img} alt="bike" width={40} height={40} className="-mt-[5px]" />
-        );
-
-        const renderInputs = (inputChecked: Checkbox[]) => inputChecked?.map((input)=> (
-            <div className="relative right-[25%] -top-[800px] ">
-                <input type={input?.isChecked} />
-            </div>
-        ))
-
-        const renderUsers = (users: Users[]) => users.map((user, index) =>
-            <p key={index} className="prospect-data-names">
-                {user.toString()}
-            </p>
-        );
-
-        const renderData = () => {
-            if (Array.isArray(prospectsHeader.data)) {
-                if (prospectsHeader.id === 3) {
-                    return renderImages(prospectsHeader.data as Images[]);
-                } else {
-                    return renderUsers(prospectsHeader.data as Users[]);
-                }
-            }
-
-            return  prospectsHeader.data;
-        }
-        //
-        // if(Array.isArray(prospectsHeader.data)) {
-        //     if(prospectsHeader.header === "Status") {
-        //         return <StatusBackground data={prospectsHeader.data}/>
-        //     }else {
-        //         return null
-        //     }
-        // }
-
-        const renderInput = () => {
-            return renderInputs(prospectsHeader.isCheckbox as Checkbox[])
-        }
-
-        return (
-            <div className="relative mt-[70px] flex flex-col justify-center gap-[58px]">
-                {renderData()}
-                {renderInput()}
-
-            </div>
-        );
-    };
-
-    const prospectsHeaderContent = (
+    const prospectHeaderContent = (
         <>
-            {prospectsHeaderData?.map((prospectsHeader: ProspectsHeader) => {
+            {prospectHeaderData?.map((prospectHeaderData: ProspectHeader)=> {
+                const classSelector: string = `${
+                    prospectHeaderData?.header === "Prospect detail" ? "agent_list_header--text agent" : "agent_list_header--text"
+                }`
                 return (
-                    <div key={prospectsHeader?.id} className="w-[100%]">
-                        <div>
-                            <p>{prospectsHeader?.header}</p>
-                        </div>
-                        <ProspectsBodyContentItem prospectsHeader={prospectsHeader} />
-                    </div>
-                );
+                  <>
+                    <th
+                        key={prospectHeaderData?.id}
+                        colSpan={1}
+                        className={classSelector}>
+                        {prospectHeaderData?.header}
+                    </th>
+                  </>
+                )
             })}
         </>
-    );
-
+    )
 
     return (
-        <section>
-        <main className="prospects-header-background">
-        <div className="prospects-header-table">
-            {prospectsHeaderContent}
-        </div>
-        </main>
+        <animated.div style={fade} className="prospect_list">
+            <table
+                className="agent_list_body_container"
+                cellPadding="5"
+                cellSpacing="0"
+            >
 
-        </section>
+                <thead>
+                  <tr className="agent_list_header">
+                      {prospectHeaderContent}
+                  </tr>
+                </thead>
+
+
+                <tbody>
+                    {prospect_list}
+                </tbody>
+
+            </table>
+        </animated.div>
     )
+
 }
+
