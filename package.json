@@ -15,7 +15,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.13.7",
     "@mui/x-date-pickers": "^6.9.2",
-    "@tanstack/react-query": "^4.32.0",
+    "@tanstack/react-query": "^4.32.1",
     "@tanstack/react-table": "^8.9.3",
     "@types/node": "20.4.1",
     "@types/react": "18.2.14",
@@ -44,6 +44,8 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.29.25",
-    "@types/react-datepicker": "^4.15.0"
+    "@types/react-datepicker": "^4.15.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }

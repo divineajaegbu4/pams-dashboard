@@ -1,52 +1,50 @@
 "use client"
-
-import React from 'react'
-import {useSpring} from "react-spring";
-import {
-    Avatar,
-    Box,
-    Text,
-    HStack,
-    Input,
-    InputGroup,
-    Select,
-    InputLeftElement,
-    Flex
-} from "@chakra-ui/react";
-
-import {
-    useQuery,
-    useMutation,
-    useQueryClient,
-    QueryClient,
-    QueryClientProvider,
-    UseQueryResult,
-    isServer,
-} from '@tanstack/react-query'
-import Image from "next/image";
-import Moment from "react-moment";
+import React, { useEffect, useState } from 'react';
+import { Avatar, Text } from '@chakra-ui/react';
+import Moment from 'react-moment';
+import { Hydrate } from '@tanstack/react-query';
 
 
-import {GetUsers} from "@/lib/getUsers";
+import { GetUsers } from '@/lib/getUsers';
+import { Header } from '@/app/component/Header/header';
+import {GetVerificationData} from '@/app/component/GetVerificationData/GetVerificationData'
 
-import {Header} from "@/app/component/Header/header";
+type Address = { city: string; zipcode: string; suite: string };
+type TRowOriginal = {
+    name: string;
+    username: string;
+    address: Address;
+    phone: string;
+    avatarSrc: string;
+};
 
-interface  TableCell {
-    (data: { cell: {row: {original: {name: string, username: string, address:{city: string, zipcode: string, suite: string}, phone: string, avatarSrc: string}}}}) => JSX.Element;
+type TRow = {
+    original: TRowOriginal;
+};
+
+type TCell = {
+    row: TRow;
+};
+
+type TableData = {
+    cell: TCell;
+};
+
+interface TableCell {
+    data: TableData;
 }
 
 interface TableColumn {
-    accessorKey: string,
-    header: string,
-    cell: TableCell
-
+    accessorKey: string;
+    header: string;
+    cell(tableData: TCell): React.JSX.Element;
 }
 
 const COLUMNS: TableColumn[] = [
     {
         accessorKey: "avatar",
         header: "",
-        cell: ({cell}) => {
+        cell: (cell: TCell) => {
             const prospectName = cell.row.original.name;
             const apiAvatar= "/next.svg"
             return <Avatar name={prospectName} src={apiAvatar}/>
@@ -56,7 +54,7 @@ const COLUMNS: TableColumn[] = [
     {
         accessorKey: "prospects",
         header: "Prospects",
-        cell: ({cell}) => {
+        cell: (cell: TCell) => {
             const prospectsFullName = cell.row.original.name;
             return (
                 <Text textTransform="capitalize">
@@ -69,7 +67,7 @@ const COLUMNS: TableColumn[] = [
     {
         accessorKey: "prospects_id",
         header: "Prospects ID",
-        cell: ({cell}) => {
+        cell: (cell: TCell) => {
             const prospectsId = cell.row.original.username;
             return <Text>{prospectsId}</Text>
 
@@ -79,7 +77,7 @@ const COLUMNS: TableColumn[] = [
     {
         accessorKey: "date",
         header: "Date",
-        cell: ({cell}) => {
+        cell: (cell: TCell) => {
             const date = cell.row.original.address.zipcode;
             return <Moment format="YYYY/MM/DD">{date}</Moment>;
 
@@ -89,7 +87,7 @@ const COLUMNS: TableColumn[] = [
     {
         accessorKey: "phone_number",
         header: "Phone Number",
-        cell: ({cell}) => {
+        cell: (cell: TCell) => {
             const phoneNumber = cell.row.original.phone;
             return <Text>{phoneNumber}</Text>
 
@@ -99,7 +97,7 @@ const COLUMNS: TableColumn[] = [
     {
         accessorKey: "location",
         header: "Location",
-        cell: ({cell}) => {
+        cell: (cell: TCell) => {
             const location = cell.row.original.address.city;
             return <Text>{location}</Text>
 
@@ -109,7 +107,7 @@ const COLUMNS: TableColumn[] = [
     {
         accessorKey: "status",
         header: "Status",
-        cell: ({cell}) => {
+        cell: (cell: TCell) => {
             const status = cell.row.original.address.suite;
             return <Text>{status}</Text>
 
@@ -117,31 +115,29 @@ const COLUMNS: TableColumn[] = [
     }
 ];
 
-export default function Prospects() {
-    const fade = useSpring({
-        from: {
-            opacity: 0,
-            marginTop: "3rem"
-        },
-        to: {
-            opacity: 1,
-            marginTop: "0rem"
-        }
-    });
 
-    const queryKey: string[] = ['users'];
+const Prospects =  () => {
+    const [initialData, setInitialData] = useState<Users | null>(null);
 
-    const { data, isLoading, error } = useQuery(queryKey, GetUsers, {
-        enabled: typeof window !== 'undefined',
-    });
+    useEffect(() => {
+        GetUsers().then(data => {
+            setInitialData(data);
+        });
+    }, [])
 
-    console.log("users", data)
+    if (!initialData) {
+        return <div>Loading...</div>; // or any loading spinner
+    }
 
-  return (
+    return (
+        <Hydrate state={initialData}>
+            <Header />
+            <div>Prospects</div>
+            <GetVerificationData initialVerificationData={initialData}/>
+        </Hydrate>
+    );
+};
 
-       <>
-        <Header/>
-        <div>Prospects</div>
-      </>
-  )
-}
+export default Prospects;
+
+
