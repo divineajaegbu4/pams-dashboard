@@ -1,3 +1,5 @@
+import React from 'react';
+
 type Cities =      {
     "city": string,
     "country": string,
@@ -54,28 +56,6 @@ type Cities =      {
 }
 
 
-// type Checkbox = {
-//     isChecked: string,
-//     id: number
-// }
-//
-//
-// type Images = {
-//     img: string,
-//     id: number
-// }
-//
-//
-// type ProspectsHeaderContentItemProps =  {
-//     prospectsHeader: ProspectsHeader
-// };
-//
-//
-// type StatusComponentProps = {
-//     data: string[];
-// };
-
-
 type Users =   {
     "id": number,
     "name": string,
@@ -98,5 +78,38 @@ type Users =   {
         "catchPhrase": string,
         "bs": string
     }
+}
+
+
+// For verification
+type Address = { city: string; zipcode: string; suite: string };
+type TRowOriginal = {
+    name: string;
+    username: string;
+    address: Address;
+    phone: string;
+    avatarSrc: string;
+};
+
+type TRow = {
+    original: TRowOriginal;
+};
+
+type TCell = {
+    row: TRow;
+};
+
+type TableData = {
+    cell: TCell;
+};
+
+type TableCell  =  {
+    data: TableData;
+}
+
+type TableColumn = {
+    accessorKey: string;
+    header: string;
+    cell(tableData: TCell): React.JSX.Element;
 }
 

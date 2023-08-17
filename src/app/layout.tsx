@@ -1,10 +1,8 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 import React, { ReactNode } from 'react';
-import { Hydrate } from '@tanstack/react-query';
 
 import { Providers } from '@/app/providers';
-import GetProviders from '@/app/getProviders'
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,12 +15,9 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
     return (
         <html className={inter.className}>
            <body>
-           <Hydrate state={null}>
                <Providers>
-                   <GetProviders>{children}</GetProviders>
+                   {children}
                </Providers>
-           </Hydrate>
-
            </body>
         </html>
     );

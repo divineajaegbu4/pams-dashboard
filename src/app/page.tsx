@@ -6,11 +6,12 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt } from 'react-icons/fa';
 import Select from "react-select";
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 
 import {Header} from "@/app/component/Header/header";
 import {PipelineDistribution} from "@/app/component/PipelineDistribution/PipelineDistribution";
 import {ProspectsHeader} from "@/app/component/ProspectsHeader/ProspectsHeader"
+import { Cities } from '../../type';
 
 interface Option {
     value: string;
